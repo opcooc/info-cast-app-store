@@ -1,0 +1,11 @@
+{
+  "key_id": "shipinhao",
+  "name": "视频号平台",
+  "display_name": "视频号",
+  "version": "1.0.0",
+  "category": "platform",
+  "description": "微信内容分发窗口",
+  "author": "管理员",
+  "support_formats": ["login", "video"],
+  "color": "#ff9f7f"
+}

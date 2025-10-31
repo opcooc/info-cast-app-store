@@ -1,23 +1,19 @@
-import RunnerContext from '../../RunnerContext.cjs';
-import { success } from '../../log.cjs';
+import RunnerContext from '../../../scripts/runner-context';
+import { success } from '../../../scripts/log';
 import type { Page, BrowserContext } from 'playwright';
 
 export async function execute(): Promise<void> {
   const page: Page = RunnerContext.getPage();
   const context: BrowserContext = RunnerContext.getContext();
 
-  await page.goto('https://cp.kuaishou.com');
+  await page.goto('https://www.tiktok.com/login?lang=en');
 
   const start = Date.now();
   while (true) {
-    // 检测“退出登录”按钮是否存在
-    const logoutCount = await page.locator('text=退出登录').count();
-    if (logoutCount > 0) break;
-
+    if (page.url().includes('/foryou')) break;
     if (Date.now() - start > 10 * 60 * 1000) {
       throw new Error('TimeoutError');
     }
-
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
 

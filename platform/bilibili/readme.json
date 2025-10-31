@@ -1,0 +1,11 @@
+{
+  "key_id": "bilibili",
+  "name": "哔哩哔哩平台",
+  "display_name": "哔哩哔哩",
+  "version": "1.0.0",
+  "category": "platform",
+  "description": "视频创作分享社区",
+  "author": "管理员",
+  "support_formats": ["login", "video"],
+  "color": "#fac858"
+}

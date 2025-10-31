@@ -1,0 +1,11 @@
+{
+  "key_id": "xiaohongshu",
+  "name": "小红书平台",
+  "display_name": "小红书",
+  "version": "1.0.0",
+  "category": "platform",
+  "description": "图文视频种草平台",
+  "author": "管理员",
+  "support_formats": ["login", "video"],
+  "color": "#fb7293"
+}

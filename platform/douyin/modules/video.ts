@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import type { Page, BrowserContext } from 'playwright';
-import RunnerContext from '../../RunnerContext.cjs';
-import { info } from '../../log.cjs';
+import RunnerContext from '../../../scripts/runner-context';
+import { info } from '../../../scripts/log';
 
 interface UploadData {
   content: string; // 视频文件路径

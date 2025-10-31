@@ -1,5 +1,5 @@
-import RunnerContext from '../../RunnerContext.cjs';
-import { success } from '../../log.cjs';
+import RunnerContext from '../../../scripts/runner-context';
+import { success } from '../../../scripts/log';
 import type { Page, BrowserContext } from 'playwright';
 
 export async function execute(): Promise<void> {

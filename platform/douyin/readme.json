@@ -1,0 +1,11 @@
+{
+  "key_id": "douyin",
+  "name": "抖音平台",
+  "display_name": "抖音",
+  "version": "1.0.0",
+  "category": "platform",
+  "description": "短视频分发平台",
+  "author": "管理员",
+  "support_formats": ["login", "video"],
+  "color": "#8e9dff"
+}

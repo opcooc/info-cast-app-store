@@ -1,11 +1,11 @@
 {
-  "key_id": "kuaishou",
-  "name": "快手平台",
-  "display_name": "快手",
+  "key_id": "baijiahao",
+  "name": "百家号平台",
+  "display_name": "百家号",
   "version": "1.0.0",
   "category": "platform",
-  "description": "内容传播与互动平台",
+  "description": "百度系内容发布平台",
   "author": "管理员",
   "support_formats": ["login", "video"],
-  "color": "#91cc75"
+  "color": "#5db0ff"
 }

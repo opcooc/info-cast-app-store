@@ -1,0 +1,11 @@
+{
+  "key_id": "tiktok",
+  "name": "TikTok平台",
+  "display_name": "TikTok",
+  "version": "1.0.0",
+  "category": "platform",
+  "description": "短视频分发平台",
+  "author": "管理员",
+  "support_formats": ["login", "video"],
+  "color": "#26deca"
+}

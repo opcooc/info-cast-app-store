@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import RunnerContext from '../../RunnerContext.cjs';
-import { info } from '../../log.cjs';
+import RunnerContext from '../../../scripts/runner-context';
+import { info } from '../../../scripts/log';
 import type { Page, BrowserContext, FileChooser, Locator, FrameLocator } from 'playwright';
 
 const months = [
