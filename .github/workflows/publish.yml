@@ -1,42 +1,53 @@
-name: Auto Publish Plugins
+name: Build and Release App Store
 
+# 只在推送 tag 时触发
 on:
   push:
-    branches: [main, dev]
-  workflow_dispatch:
+    tags:
+      - 'v*' # 例如 v1.0.0, v1.2.3 等
 
 jobs:
-  publish:
+  build-and-release:
+    name: Build and Release
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🧩 Checkout repository
-        uses: actions/checkout@v4
+      # 1. 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. 安装 Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
+          node-version: 20 # 或你项目使用的版本
 
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: pnpm install
+
+      # 4. 设置环境变量 DATA（可选，如果你的脚本需要）
+      # - name: Set DATA env
+      #   run: echo "DATA={\"executablePath\":\"/usr/bin/google-chrome\"}" >> $GITHUB_ENV
+
+      # 5. 执行构建脚本
+      - name: Build App Store
+        run: pnpm run build:app_store
+
+      # 6. 创建 GitHub Release 并上传 dist 目录下所有文件
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          node-version: 20
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🏗️ Build plugins
-        run: npm run build-plugins
-
-      - name: 🚀 Publish plugins
+          tag_name: ${{ github.ref_name }} # 使用触发的 tag
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
         env:
-          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
-          GITEE_OWNER: ${{ secrets.GITEE_OWNER }}
-          GITEE_REPO: ${{ secrets.GITEE_REPO }}
-        run: npm run publish-plugins
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🧩 Commit updates
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add plugins.json README.md || true
-          git commit -m "chore: auto-update plugin metadata" || echo "No changes"
-          git push
+      - name: Upload dist files to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/**  # 上传 dist 文件夹下所有文件
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
