@@ -3,39 +3,48 @@ name: Build and Release App Store
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*' # 只在推送 tag 时触发，比如 v1.0.0
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. 安装 Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: 20
+          cache: 'pnpm' # 仅缓存依赖，不安装 pnpm
 
+      # 3. 安装 pnpm
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: '9'
+          version: 9 # 你也可以写 'latest'
 
-      - name: Show pnpm version (debug)
+      # 4. 检查 pnpm 是否安装成功
+      - name: Verify pnpm installation
         run: |
-          pnpm --version
+          echo "Node version: $(node -v)"
+          echo "npm version: $(npm -v)"
+          echo "pnpm version: $(pnpm -v)"
           which pnpm
 
+      # 5. 安装依赖
       - name: Install dependencies
         run: pnpm install
 
+      # 6. 执行构建脚本
       - name: Build App Store
         run: pnpm run build:app_store
 
-      - name: Create GitHub Release and upload dist
+      # 7. 创建 Release 并上传 dist 文件
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
