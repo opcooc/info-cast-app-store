@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*' # 例如 v1.0.0, v1.2.3 等
 
+permissions:
+  contents: write  # ✅ 必须加上，允许创建 release、上传文件
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
