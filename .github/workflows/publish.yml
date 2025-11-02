@@ -1,6 +1,5 @@
 name: Build and Release App Store
 
-# 只在推送 tag 时触发
 on:
   push:
     tags:
@@ -20,34 +19,31 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20 # 或你项目使用的版本
+          node-version: 20
+          cache: 'pnpm' # 自动缓存 pnpm 依赖
 
-      # 3. 安装依赖
+      # 3. 安装 pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9 # 你项目中使用的版本，例如 9.x 或 8.x
+
+      # 4. 安装依赖
       - name: Install dependencies
         run: pnpm install
 
-      # 4. 设置环境变量 DATA（可选，如果你的脚本需要）
-      # - name: Set DATA env
-      #   run: echo "DATA={\"executablePath\":\"/usr/bin/google-chrome\"}" >> $GITHUB_ENV
-
-      # 5. 执行构建脚本
+      # 5. 构建项目
       - name: Build App Store
         run: pnpm run build:app_store
 
-      # 6. 创建 GitHub Release 并上传 dist 目录下所有文件
+      # 6. 创建 GitHub Release 并上传 dist 文件夹
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }} # 使用触发的 tag
+          tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload dist files to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/**  # 上传 dist 文件夹下所有文件
+          files: dist/** # 一步上传所有 dist 文件
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
