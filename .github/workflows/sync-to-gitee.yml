@@ -69,12 +69,23 @@ jobs:
               "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases" | jq -r '.id')
           fi
 
+          echo "release_id=$release_id"
+          if [ -z "$release_id" ] || [ "$release_id" = "null" ]; then
+            echo "❌ Release ID is empty, cannot upload assets!"
+            exit 1
+          fi
+
           echo "📦 Uploading assets to Gitee..."
+          ls -l assets
           for file in assets/*; do
-            curl -s -X POST \
-              -H "Content-Type: multipart/form-data" \
-              -H "Authorization: token ${{ secrets.GITEE_ACCESS_TOKEN }}" \
-              -F "access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
-              -F "file=@${file}" \
-              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/${release_id}/attach_files"
+            if [ -f "$file" ]; then
+              echo "Uploading $file..."
+              curl -s -X POST \
+                -F "access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
+                -F "file=@${file}" \
+                "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/${release_id}/attach_files"
+            else
+              echo "⚠️ $file not found, skipping..."
+            fi
           done
+
