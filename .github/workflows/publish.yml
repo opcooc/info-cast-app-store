@@ -79,7 +79,7 @@ jobs:
           else
             release_id=$(curl -s -X POST \
               -H "Content-Type: application/json" \
-              -d "{\"tag_name\": \"$TAG_NAME\", \"name\": \"$RELEASE_NAME\", \"body\": \"$BODY\", \"prerelease\": false}" \
+              -d "{\"tag_name\": \"$TAG_NAME\", \"name\": \"$RELEASE_NAME\", \"body\": \"$BODY\", \"target_commitish\":\"master\",\"prerelease\": false}" \
               "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" | jq -r '.id')
           fi
 
