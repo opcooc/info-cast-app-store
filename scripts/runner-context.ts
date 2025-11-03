@@ -8,13 +8,11 @@ const viewportScript = readFileSync(path.resolve(__dirname, 'fix-viewport.js'), 
 
 
 class RunnerContext {
-    private context: Global.RunnerContextType;
+    private props: Partial<Global.RunnerContextType>;
 
     constructor() {
-        this.context = {
+        this.props = {
             id: null,
-            app_dir: null,
-            media_type: null,
             data: null,
             browser: null,
             context: null,
@@ -27,105 +25,86 @@ class RunnerContext {
     /**
      * 设置参数信息
      */
-    setContext({ id, app_dir, media_type, english, data }: {
-        id: string;
-        app_dir: string;
-        media_type: string;
-        english: boolean;
-        data: Global.RunnerData;
-    }) {
-        this.context.id = id;
-        this.context.app_dir = app_dir;
-        this.context.media_type = media_type;
-        this.context.english = english;
-        this.context.data = data;
+    setContext(id: string, english: boolean, data: Global.RunnerData) {
+        this.props.id = id;
+        this.props.english = english;
+        this.props.data = data;
     }
 
     /**
      * 初始化浏览器、context 和 page
      */
     async init() {
-        const data = this.context.data;
+        const data = this.props.data;
         if (!data) throw new Error('RunnerContext data not initialized');
 
         const launchOptions: LaunchOptions = {
-            args: this.context.english ? ['--lang=en-US'] : [],
-            headless: Boolean(data.headless),
+            args: this.props.english ? ['--lang=en-US'] : [],
+            headless: data.headless,
         };
 
         if (data.executablePath) launchOptions.executablePath = data.executablePath;
+        if (data.proxy) launchOptions.proxy = data.proxy;
 
-        if (data.proxy) {
-            const proxy: Global.ProxyInfo = {
-                server: data.proxy.server
-            };
-            if (data.proxy.username) proxy.username = data.proxy.username;
-            if (data.proxy.password) proxy.password = data.proxy.password;
-            launchOptions.proxy = proxy;
-        }
-
-        this.context.browser = await chromium.launch(launchOptions);
+        this.props.browser = await chromium.launch(launchOptions);
 
         const storageState = data.cookie_info ? JSON.parse(data.cookie_info) : undefined;
 
-        this.context.context = await this.context.browser.newContext({
+        this.props.context = await this.props.browser.newContext({
             viewport: { width: 1920, height: 1080 },
             storageState,
-            ...(this.context.english ? { locale: 'en-US' } : {})
+            ...(this.props.english ? { locale: 'en-US' } : {})
         });
 
         // 注入 stealth 脚本
-        await this.context.context.addInitScript({ content: stealthScript });
+        await this.props.context.addInitScript({ content: stealthScript });
 
         // 针对 douyin 平台修复 viewport
-        await this.context.context.addInitScript({ content: viewportScript });
+        await this.props.context.addInitScript({ content: viewportScript });
 
 
-        await this.context.context.grantPermissions(['geolocation']);
-        this.context.page = await this.context.context.newPage();
+        await this.props.context.grantPermissions(['geolocation']);
+        this.props.page = await this.props.context.newPage();
         this.setupPageEventListeners();
     }
 
     private setupPageEventListeners() {
-        if (!this.context.page) return;
+        if (!this.props.page) return;
 
         const errorIfWaiting = (msg: string) => {
-            if (this.context.waitingForWorker) {
+            if (this.props.waitingForWorker) {
                 throw new Error(msg);
             }
         };
 
-        this.context.page.on('close', () => errorIfWaiting('Page closed by user'));
-        this.context.page.on('crash', () => errorIfWaiting('Page crash by user'));
-        this.context.page.on('detached', () => errorIfWaiting('Page detached by user'));
+        this.props.page.on('close', () => errorIfWaiting('Page closed by user'));
+        this.props.page.on('crash', () => errorIfWaiting('Page crash by user'));
     }
 
-    getId(): string { return this.context.id; }
-    getAppDir(): string { return this.context.app_dir; }
-    getMediaType(): string { return this.context.media_type; }
-    getData(): Global.RunnerData { return this.context.data; }
-    getBrowser(): Browser { return this.context.browser; }
-    getContext(): BrowserContext { return this.context.context; }
-    getPage(): Page { return this.context.page; }
-    setWaitingState(bol: boolean) { this.context.waitingForWorker = bol; }
+    getId(): string { return this.props.id!; }
+    getAppDir(): string { return this.props.data!.app_dir!; }
+    getFormat(): string { return this.props.data!.format!; }
+    getData(): Global.RunnerData { return this.props.data!; }
+    getBrowser(): Browser { return this.props.browser!; }
+    getContext(): BrowserContext { return this.props.context!; }
+    getPage(): Page { return this.props.page!; }
+    setWaitingState(bol: boolean) { this.props.waitingForWorker = bol; }
 
     async safeClose() {
-        if (this.context.context) {
-            try { await this.context.context.close(); } catch(e: any) { console.warn('Context close failed', e?.message); }
-            this.context.context = null;
+        if (this.props.context) {
+            try { await this.props.context.close(); } catch(e: any) { console.warn('Context close failed', e?.message); }
+            this.props.context = null;
         }
-        if (this.context.browser) {
-            try { await this.context.browser.close(); } catch(e: any) { console.warn('Browser close failed', e?.message); }
-            this.context.browser = null;
+        if (this.props.browser) {
+            try { await this.props.browser.close(); } catch(e: any) { console.warn('Browser close failed', e?.message); }
+            this.props.browser = null;
         }
-        this.context.page = null;
+        this.props.page = null;
     }
 
     clear() {
-        this.context = {
+        this.props = {
             id: null,
-            app_dir: null,
-            media_type: null,
             data: null,
             browser: null,
             context: null,

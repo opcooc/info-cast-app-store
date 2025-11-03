@@ -1,11 +1,10 @@
 import RunnerContext from './runner-context';
 import { error as logError, convertError } from './log';
+import fs from "node:fs";
 
 interface ArgsResult {
   id: string;
-  app_dir: string;
-  media_type: string;
-  data: Record<string, any>;
+  data: Global.RunnerData;
 }
 
 /**
@@ -13,29 +12,41 @@ interface ArgsResult {
  */
 export function validateArgs(readme: any): ArgsResult {
   const id = process.argv[2];
-  const app_dir = process.argv[3];
-  const media_type = process.argv[4];
-  const envData = process.env.DATA;
-
-  if (!id || !app_dir || !media_type || !envData) {
-    console.error('[argv.id]、[argv.app_dir]、[argv.media_type]、[env.data] is required');
+  if (!id) {
+    console.error("Missing argument: id");
     process.exit(1);
   }
 
-  let data: Record<string, any>;
+  let data: Global.RunnerData | undefined = undefined;
+
   try {
-    data = JSON.parse(envData);
+    const jsonPath = process.argv[3];
+    if (jsonPath) {
+      const jsonStr = fs.readFileSync(jsonPath, "utf-8");
+      data = JSON.parse(jsonStr);
+    } else { 
+      const envData = process.env.DATA;
+      if (envData) { 
+        data = JSON.parse(envData);
+      }
+    }
   } catch (e: any) {
-    console.error('[env.data] JSON parse error:', e.message);
+    console.error("JSON parse error:", e.message);
     process.exit(1);
   }
 
-  if (!readme.support_formats.includes(media_type.toLowerCase())) {
-    console.error(`[media_type] "${media_type}" is not supported`);
+  if (!data) {
+    console.error("Missing argument: jsonPath or DATA");
     process.exit(1);
   }
 
-  return { id, app_dir, media_type: media_type.toLowerCase(), data };
+  data.format = data.format.toLowerCase();
+  if (!readme.support_formats.includes(data.format)) {
+    console.error(`[format] "${data.format}" is not supported`);
+    process.exit(1);
+  }
+
+  return { id, data };
 }
 
 /**
@@ -43,16 +54,16 @@ export function validateArgs(readme: any): ArgsResult {
  */
 export async function runApp(readme: any, modules: Record<string, any>) {
   try {
-    const { id, app_dir, media_type, data } = validateArgs(readme);
+    const { id, data } = validateArgs(readme);
 
     RunnerContext.setWaitingState(true);
-    RunnerContext.setContext({ id, app_dir, media_type, english: false, data });
+    RunnerContext.setContext(id, false , data);
     await RunnerContext.init();
 
-    const module = modules[RunnerContext.getMediaType()];
+    const module = modules[RunnerContext.getFormat()];
 
     if (!module || typeof module.execute !== 'function') {
-      throw new Error(`MediaType module "${media_type}" does not export a valid execute() method`);
+      throw new Error(`Format module "${RunnerContext.getFormat()}" does not export a valid execute() method`);
     }
 
     await module.execute();

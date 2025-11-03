@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import RunnerContext from '../../../scripts/runner-context';
 import { info } from '../../../scripts/log';
-import type { Page, BrowserContext, FileChooser, Locator, FrameLocator } from 'playwright';
+import type { Page, BrowserContext, Locator, FrameLocator } from 'playwright';
 
 const months = [
   "January", "February", "March", "April", "May", "June", 
@@ -31,10 +31,10 @@ export async function execute(): Promise<void> {
   const uploadButton: Locator = locatorBase.locator('button:has-text("Select video"):visible');
   await uploadButton.waitFor({ state: 'visible' });
 
-  const [fileChooser]: FileChooser[] = await Promise.all([
+  const [fileChooser] = await Promise.all([
     page.waitForEvent('filechooser'),
     uploadButton.click(),
-  ]);
+  ] as const);
   await fileChooser.setFiles(data.content);
 
   await page.waitForFunction(() => {
@@ -78,17 +78,17 @@ export async function execute(): Promise<void> {
     await locatorBase.locator('.cover-container').click();
     await locatorBase.locator('.cover-edit-container >> text=Upload cover').click();
 
-    const [thumbnailChooser]: FileChooser[] = await Promise.all([
+    const [thumbnailChooser] = await Promise.all([
       page.waitForEvent('filechooser'),
       locatorBase.locator('.upload-image-upload-area').click()
-    ]);
+    ] as const);
     await thumbnailChooser.setFiles(data.thumbnail_path);
     await locatorBase.locator('div.cover-edit-panel:not(.hide-panel)').getByRole('button', { name: 'Confirm' }).click();
     await page.waitForTimeout(3000);
   }
 
-  if (data.scheduled_release_time) {
-    const d = dayjs(data.scheduled_release_time);
+  if (data.schedule_execute_time) {
+    const d = dayjs(data.schedule_execute_time);
     const scheduleMonth = d.month() + 1;
     const day = d.date().toString().padStart(2, '0');
     const hour = d.hour().toString().padStart(2, '0');

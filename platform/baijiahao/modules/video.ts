@@ -19,7 +19,7 @@ export async function execute(): Promise<void> {
   await info('open_page', null);
 
   // 上传视频
-  await page.locator("div[class^='video-main-container'] input[type='file']").setInputFiles(data.content);
+  await page.locator("div[class^='video-main-container'] input[type='file']").setInputFiles(data.file_path);
   await page.waitForSelector('div .cover-overlay:has-text("上传中")', { state: 'visible', timeout: 10 * 60 * 1000 });
 
   const result = await Promise.race([
@@ -40,8 +40,8 @@ export async function execute(): Promise<void> {
   await info('publish_content_complete', null);
 
   // 判断是否定时发布
-  if (data.scheduled_release_time) {
-    await handleScheduledPublish(page, data.scheduled_release_time);
+  if (data.schedule_execute_time) {
+    await handleScheduledPublish(page, data.schedule_execute_time);
   } else {
     await page.getByRole('button', { name: '发布', exact: true }).click();
   }
@@ -59,7 +59,7 @@ export async function execute(): Promise<void> {
 }
 
 /** 定时发布逻辑 */
-async function handleScheduledPublish(page: Page, time: string) {
+async function handleScheduledPublish(page: Page, time: number) {
   await page.getByRole('button', { name: '定时发布', exact: true }).click();
   await page.waitForSelector('div.select-wrap', { timeout: 5000 });
 

@@ -3,18 +3,10 @@ import RunnerContext from '../../../scripts/runner-context';
 import { info } from '../../../scripts/log';
 import type { Page, BrowserContext } from 'playwright';
 
-interface PublishData {
-  content: string;
-  title: string;
-  tags?: string;
-  scheduled_release_time?: string | number | Date;
-  [key: string]: any;
-}
-
 export async function execute(): Promise<void> {
   const page: Page = RunnerContext.getPage();
   const context: BrowserContext = RunnerContext.getContext();
-  const data: PublishData = RunnerContext.getData();
+  const data = RunnerContext.getData();
 
   await page.goto('https://cp.kuaishou.com/article/publish/video', { timeout: 60000 });
   await page.waitForLoadState('domcontentloaded');
@@ -32,7 +24,7 @@ export async function execute(): Promise<void> {
     page.waitForEvent('filechooser'),
     uploadBtn.click(),
   ]);
-  await fileChooser.setFiles(data.content);
+  await fileChooser.setFiles(data.file_path);
 
   await guideSkip(page);
 
@@ -57,8 +49,8 @@ export async function execute(): Promise<void> {
   }
 
   // 定时发布时间
-  if (data.scheduled_release_time) {
-    const publishDateHour = dayjs(data.scheduled_release_time).format('YYYY-MM-DD HH:mm:ss');
+  if (data.schedule_execute_time) {
+    const publishDateHour = dayjs(data.schedule_execute_time).format('YYYY-MM-DD HH:mm:ss');
     await page.locator("label:has-text('定时发布')").click();
     await page.waitForTimeout(1000 + Math.floor(Math.random() * 1000));
 

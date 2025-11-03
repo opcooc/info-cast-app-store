@@ -3,19 +3,10 @@ import type { Page, BrowserContext } from 'playwright';
 import RunnerContext from '../../../scripts/runner-context';
 import { info } from '../../../scripts/log';
 
-interface UploadData {
-  content: string; // 视频文件路径
-  title: string;
-  tags?: string;
-  thumbnail_path?: string;
-  location?: string;
-  scheduled_release_time?: string;
-}
-
 export async function execute(): Promise<void> {
   const page: Page = RunnerContext.getPage();
   const context: BrowserContext = RunnerContext.getContext();
-  const data: UploadData = RunnerContext.getData();
+  const data = RunnerContext.getData();
 
   await page.goto('https://creator.douyin.com/creator-micro/content/upload', { timeout: 60000 });
   await page.waitForLoadState('domcontentloaded');
@@ -28,7 +19,7 @@ export async function execute(): Promise<void> {
   await info('open_page', null);
 
   // 上传视频
-  await page.locator("div[class^='container'] input").setInputFiles(data.content);
+  await page.locator("div[class^='container'] input").setInputFiles(data.file_path);
 
   await Promise.any([
     page.waitForURL('https://creator.douyin.com/creator-micro/content/publish?enter_from=publish_page', { timeout: 60000 }),
@@ -92,7 +83,7 @@ export async function execute(): Promise<void> {
   }
 
   // ---- 上传封面 ----
-  if (data.thumbnail_path) {
+  if (data.cover_path) {
     await page.getByText('选择封面').click();
     await page.waitForSelector('div.semi-modal-content', { state: 'visible' });
     await page.getByText('设置竖封面').click();
@@ -100,7 +91,7 @@ export async function execute(): Promise<void> {
     await page.waitForTimeout(1000 + Math.floor(Math.random() * 1000));
     const fileInput = page.locator("div[class^='semi-upload upload'] input.semi-upload-hidden-input");
     await fileInput.waitFor({ state: 'attached' });
-    await fileInput.setInputFiles(data.thumbnail_path);
+    await fileInput.setInputFiles(data.cover_path);
 
     const doneBtn = page.locator("div[class^='extractFooter'] button:has-text('完成')");
     await doneBtn.waitFor({ state: 'visible' });
@@ -130,9 +121,9 @@ export async function execute(): Promise<void> {
   }
 
   // ---- 定时发布 ----
-  if (data.scheduled_release_time) {
+  if (data.schedule_execute_time) {
     await page.locator("[class^='radio']:has-text('定时发布')").click();
-    const publishDateHour = dayjs(data.scheduled_release_time).format('YYYY-MM-DD HH:mm');
+    const publishDateHour = dayjs(data.schedule_execute_time).format('YYYY-MM-DD HH:mm');
     await page.waitForTimeout(1000 + Math.floor(Math.random() * 1000));
 
     await page.locator('.semi-input[placeholder="日期和时间"]').click();

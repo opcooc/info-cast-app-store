@@ -3,17 +3,10 @@ import RunnerContext from '../../../scripts/runner-context';
 import { info } from '../../../scripts/log';
 import type { Page, BrowserContext } from 'playwright';
 
-interface Data {
-  content: string[];
-  title: string;
-  tags?: string;
-  scheduled_release_time?: string | Date;
-}
-
 export async function execute(): Promise<void> {
   const page: Page = RunnerContext.getPage();
   const context: BrowserContext = RunnerContext.getContext();
-  const data: Data = RunnerContext.getData();
+  const data = RunnerContext.getData();
 
   await page.goto('https://creator.xiaohongshu.com/publish/publish?from=homepage&target=video', { timeout: 60000 });
   await page.waitForLoadState('domcontentloaded');
@@ -25,7 +18,7 @@ export async function execute(): Promise<void> {
 
   await info('open_page', null);
 
-  await page.locator("div[class^='upload-content'] input.upload-input").setInputFiles(data.content);
+  await page.locator("div[class^='upload-content'] input.upload-input").setInputFiles(data.file_path);
 
   const result = await Promise.race([
     page.locator('div.stage', { hasText: '上传成功' })
@@ -51,13 +44,13 @@ export async function execute(): Promise<void> {
   await editor.focus();
 
   for (const tag of tags) {
-    await editor.type(`#${tag}`);
+    await editor.fill(`#${tag}`);
     await editor.press('Space');
   }
 
-  if (data.scheduled_release_time) {
+  if (data.schedule_execute_time) {
     await page.locator("label:has-text('定时发布')").click();
-    const d = dayjs(data.scheduled_release_time);
+    const d = dayjs(data.schedule_execute_time);
     const formatted = d.format('YYYY-MM-DD HH:mm');
     await page.locator('.el-input__inner[placeholder="选择日期和时间"]').click();
     await page.keyboard.press("Control+KeyA");
@@ -67,7 +60,7 @@ export async function execute(): Promise<void> {
 
   await info('publish_content_complete', null);
 
-  const publishBtn = data.scheduled_release_time ? '定时发布' : '发布';
+  const publishBtn = data.schedule_execute_time ? '定时发布' : '发布';
   await page.locator(`button:has-text("${publishBtn}")`).click();
 
   await page.waitForTimeout(3000 + Math.floor(Math.random() * 1000));

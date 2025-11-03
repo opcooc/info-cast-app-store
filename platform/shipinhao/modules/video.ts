@@ -3,14 +3,6 @@ import RunnerContext from '../../../scripts/runner-context';
 import { info } from '../../../scripts/log';
 import type { Page, BrowserContext, ElementHandle } from 'playwright';
 
-interface PublishData {
-  content: string[];
-  title: string;
-  tags?: string;
-  category?: string;
-  scheduled_release_time?: string | Date;
-}
-
 function formatShortTitle(originTitle: string): string {
   const allowedSpecialChars = '《》“”:+?%°';
   let filtered = [...originTitle].map(char => {
@@ -26,7 +18,7 @@ function formatShortTitle(originTitle: string): string {
 export async function execute(): Promise<void> {
   const page: Page = RunnerContext.getPage();
   const context: BrowserContext = RunnerContext.getContext();
-  const data: PublishData = RunnerContext.getData();
+  const data = RunnerContext.getData();
 
   await page.goto('https://channels.weixin.qq.com/platform/post/create', { timeout: 60000 });
   await page.waitForLoadState('domcontentloaded');
@@ -48,7 +40,7 @@ export async function execute(): Promise<void> {
     page.waitForEvent('filechooser'),
     page.locator('.post-upload-wrap').click()
   ]);
-  await fileChooser.setFiles(data.content);
+  await fileChooser.setFiles(data.file_path);
 
   const result = await detectUploadStatus(page);
   if (result === 'fail') {
@@ -117,18 +109,18 @@ export async function execute(): Promise<void> {
   const shortTitleInput = page.getByText('短标题', { exact: true }).locator('..').locator('xpath=following-sibling::div').locator('span input[type="text"]');
   if (await shortTitleInput.count()) await shortTitleInput.fill(shortTitle);
 
-  if (data.scheduled_release_time) {
+  if (data.schedule_execute_time) {
     await page.locator('label:has-text("定时")').nth(1).click();
     await page.click('input[placeholder="请选择发表时间"]');
 
-    const d = dayjs(data.scheduled_release_time);
+    const d = dayjs(data.schedule_execute_time);
     const publishDateDay = `${d.date()}`;
     const currentMonth = `${d.month() + 1}月`;
 
     const pageMonth = await page.innerText('span.weui-desktop-picker__panel__label:has-text("月")');
     if (pageMonth !== currentMonth) await page.click('button.weui-desktop-btn__icon__right');
 
-    const elements: ElementHandle<HTMLElement>[] = await page.$$('table.weui-desktop-picker__table a');
+    const elements: ElementHandle<Element>[] = await page.$$('table.weui-desktop-picker__table a');
     for (const el of elements) {
       if (!(await el.evaluate(el => el.className.includes('weui-desktop-picker__disabled')))) {
         if ((await el.innerText()).trim() === publishDateDay) {
