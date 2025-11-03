@@ -50,7 +50,7 @@ jobs:
       # 7️⃣ 同步到 Gitee
       - name: Sync Release to Gitee
         run: |
-          echo "Configure SSH..."
+          echo "=== Configure SSH for Gitee ==="
           mkdir -p ~/.ssh
           echo "${{ secrets.GITEE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
@@ -58,37 +58,57 @@ jobs:
 
           TAG_NAME="${{ github.ref_name }}"
           RELEASE_NAME="Release $TAG_NAME"
-          BODY=""
+          BODY="${{ github.event.head_commit.message || '' }}"
 
-          echo "Fetching GitHub release info..."
+          echo "=== Detect default branch ==="
+          # 获取仓库默认分支
+          DEFAULT_BRANCH=$(curl -s -H "Authorization: token ${{ secrets.GITEE_ACCESS_TOKEN }}" \
+            "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
+            | jq -r '.default_branch')
+          echo "Default branch: $DEFAULT_BRANCH"
+
+          echo "=== Fetching GitHub release info ==="
           curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/releases/tags/${TAG_NAME}" > release.json
+          cat release.json
 
-          mkdir assets
+          mkdir -p assets
           for url in $(jq -r '.assets[].browser_download_url' release.json); do
             echo "Downloading asset: $url"
             wget -q -P assets "$url"
           done
 
-          echo "Creating or updating Gitee release..."
+          echo "=== Create or update Gitee release ==="
           existing=$(curl -s -H "Content-Type: application/json" \
             "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/tags/${TAG_NAME}?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}")
-
+          
           if echo "$existing" | grep -q '"id":'; then
+            echo "🟡 Release already exists on Gitee, using existing release"
             release_id=$(echo "$existing" | jq -r '.id')
           else
+            echo "🟢 Creating new release on Gitee..."
             release_id=$(curl -s -X POST \
               -H "Content-Type: application/json" \
-              -d "{\"tag_name\": \"$TAG_NAME\", \"name\": \"$RELEASE_NAME\", \"body\": \"$BODY\", \"target_commitish\":\"master\",\"prerelease\": false}" \
-              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" | jq -r '.id')
+              -d "{\"tag_name\": \"$TAG_NAME\", \"name\": \"$RELEASE_NAME\", \"body\": \"$BODY\", \"target_commitish\":\"$DEFAULT_BRANCH\", \"prerelease\": false}" \
+              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
+              | jq -r '.id')
           fi
 
-          echo "Uploading assets to Gitee..."
+          echo "Release ID: $release_id"
+          if [ -z "$release_id" ] || [ "$release_id" = "null" ]; then
+            echo "❌ Failed to create or detect Gitee release. Check token permissions and default branch!"
+            exit 1
+          fi
+
+          echo "=== Uploading assets to Gitee ==="
           ls -l assets
           for file in assets/*; do
             [ -f "$file" ] || continue
+            echo "Uploading $file..."
             curl -s -X POST \
               -F "access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
               -F "file=@${file}" \
               "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/${release_id}/attach_files"
           done
+
+          echo "✅ Gitee release sync completed!"
