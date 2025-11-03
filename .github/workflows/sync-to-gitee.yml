@@ -1,80 +1,39 @@
 name: Sync GitHub Releases to Gitee
-
 on:
   release:
-    types: [published] # 当 GitHub Release 发布后触发
-
-permissions:
-  contents: read
-
+    types: [published]
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: sudo apt-get install -y curl jq openssh-client
+      - name: Install SSH Client
+        run: sudo apt-get install -y openssh-client
 
-      - name: Configure SSH for Gitee
+      - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.GITEE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan gitee.com >> ~/.ssh/known_hosts
+        env:
+          GITEE_SSH_PRIVATE_KEY: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
 
-      # 获取 GitHub Release 信息
-      - name: Get GitHub Release info
-        id: get_release
+      - name: Clone Gitee Repository
+        run: git clone git@gitee.com:your_username/your_repo.git
+
+      - name: Sync Release Assets
         run: |
-          echo "Fetching GitHub release info for tag: ${{ github.event.release.tag_name }}"
-          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.event.release.tag_name }}" \
-            > release.json
-
-          echo "release_json_path=release.json" >> $GITHUB_OUTPUT
-
-      # 下载所有附件文件
-      - name: Download release assets
-        run: |
-          mkdir assets
-          for url in $(jq -r '.assets[].browser_download_url' release.json); do
-            echo "Downloading asset: $url"
-            wget -q -P assets "$url"
-          done
-
-      # 上传至 Gitee Release
-      - name: Publish Release to Gitee
-        run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          RELEASE_NAME="${{ github.event.release.name }}"
-          BODY="${{ github.event.release.body }}"
+          cd your_repo
+          # 下载GitHub Release文件（示例：通过API或直接引用URL）
+          # 假设已知文件URL为 ${{ github.event.release.assets[0].browser_download_url }}
+          wget -O asset.zip "${{ github.event.release.assets[0].browser_download_url }}"
           
-          # 检查是否已存在该 tag 的 release
-          existing=$(curl -s -H "Content-Type: application/json" \
-            -H "Authorization: token ${{ secrets.GITEE_ACCESS_TOKEN }}" \
-            "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/tags/${TAG_NAME}")
-
-          if echo "$existing" | grep -q '"id":'; then
-            echo "🟡 Release already exists on Gitee, updating..."
-            release_id=$(echo "$existing" | jq -r '.id')
-          else
-            echo "🟢 Creating new release on Gitee..."
-            release_id=$(curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -H "Authorization: token ${{ secrets.GITEE_ACCESS_TOKEN }}" \
-              -d "{\"tag_name\": \"$TAG_NAME\", \"name\": \"$RELEASE_NAME\", \"body\": \"$BODY\", \"prerelease\": false}" \
-              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases" | jq -r '.id')
-          fi
-
-          echo "📦 Uploading assets to Gitee..."
-          for file in assets/*; do
-            curl -s -X POST \
-              -H "Content-Type: multipart/form-data" \
-              -H "Authorization: token ${{ secrets.GITEE_ACCESS_TOKEN }}" \
-              -F "access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
-              -F "file=@${file}" \
-              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/${release_id}/attach_files"
-          done
+          # 提交到Gitee
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "Sync Release: ${{ github.event.release.tag_name }}"
+          git push origin main
