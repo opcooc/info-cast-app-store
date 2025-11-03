@@ -1,15 +1,15 @@
-name: Build and Release App Store
+name: Build, Release and Sync to Gitee
 
 on:
   push:
     tags:
-      - 'v*' # 例如 v1.0.0, v1.2.3 等
+      - 'v*'
 
 permissions:
-  contents: write  # ✅ 必须加上，允许创建 release、上传文件
+  contents: write
 
 jobs:
-  build-and-release:
+  build-release-sync:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
 
-      # 3️⃣ ✅ 直接安装 pnpm（最稳定方式）
+      # 3️⃣ 安装 pnpm
       - name: Install pnpm
         run: |
           npm install -g pnpm
@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # 5️⃣ 执行构建脚本
+      # 5️⃣ 构建项目
       - name: Build App Store
         run: pnpm run build:app_store
 
@@ -46,3 +46,49 @@ jobs:
           files: dist/**
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 7️⃣ 同步到 Gitee
+      - name: Sync Release to Gitee
+        run: |
+          echo "Configure SSH..."
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GITEE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan gitee.com >> ~/.ssh/known_hosts
+
+          TAG_NAME="${{ github.ref_name }}"
+          RELEASE_NAME="Release $TAG_NAME"
+          BODY=""
+
+          echo "Fetching GitHub release info..."
+          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${TAG_NAME}" > release.json
+
+          mkdir assets
+          for url in $(jq -r '.assets[].browser_download_url' release.json); do
+            echo "Downloading asset: $url"
+            wget -q -P assets "$url"
+          done
+
+          echo "Creating or updating Gitee release..."
+          existing=$(curl -s -H "Content-Type: application/json" \
+            "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/tags/${TAG_NAME}?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}")
+
+          if echo "$existing" | grep -q '"id":'; then
+            release_id=$(echo "$existing" | jq -r '.id')
+          else
+            release_id=$(curl -s -X POST \
+              -H "Content-Type: application/json" \
+              -d "{\"tag_name\": \"$TAG_NAME\", \"name\": \"$RELEASE_NAME\", \"body\": \"$BODY\", \"prerelease\": false}" \
+              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases?access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" | jq -r '.id')
+          fi
+
+          echo "Uploading assets to Gitee..."
+          ls -l assets
+          for file in assets/*; do
+            [ -f "$file" ] || continue
+            curl -s -X POST \
+              -F "access_token=${{ secrets.GITEE_ACCESS_TOKEN }}" \
+              -F "file=@${file}" \
+              "https://gitee.com/api/v5/repos/${{ secrets.GITEE_REPO }}/releases/${release_id}/attach_files"
+          done
