@@ -10,10 +10,11 @@ const __dirname = path.dirname(__filename);
 const PLATFORM_DIR = path.resolve(__dirname, '../platform');
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PACKAGE_FILE = path.resolve(__dirname, '../package.json');
+const NODE_MODULES_DIR = path.resolve(__dirname, '../node_modules');
 
 if (fs.existsSync(DIST_DIR)) {
   fs.rmSync(DIST_DIR, { recursive: true, force: true });
-} else { 
+} else {
   fs.mkdirSync(DIST_DIR, { recursive: true });
 }
 
@@ -29,6 +30,22 @@ interface Readme {
   color?: string;
 }
 
+/** 复制文件夹（递归） */
+function copyDirSync(src: string, dest: string) {
+  if (!fs.existsSync(src)) return;
+  fs.mkdirSync(dest, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/** 打包 zip */
 async function zipFolder(sourceDir: string, outPath: string) {
   return new Promise<void>((resolve, reject) => {
     const output = fs.createWriteStream(outPath);
@@ -73,23 +90,36 @@ async function build() {
 
     fs.copyFileSync(iconFile, path.join(targetDir, 'icon.svg'));
 
+    // 额外文件
     const filesToCopy = ['stealth.min.js', 'fix-viewport.js'];
     for (const file of filesToCopy) {
       const src = path.join('./', file);
       const dest = path.join(targetDir, file);
-      if (fs.existsSync(src)) {
-        fs.copyFileSync(src, dest);
+      if (fs.existsSync(src)) fs.copyFileSync(src, dest);
+    }
+
+    // 复制指定依赖到插件中
+    const depsToInclude = ['playwright', 'dayjs'];
+    const targetNodeModules = path.join(targetDir, 'node_modules');
+    for (const dep of depsToInclude) {
+      const srcDep = path.join(NODE_MODULES_DIR, dep);
+      const destDep = path.join(targetNodeModules, dep);
+      if (fs.existsSync(srcDep)) {
+        console.log(`  → Copying dependency: ${dep}`);
+        copyDirSync(srcDep, destDep);
       } else {
-        console.warn(`Warning: ${src} not found, skipped copy.`);
+        console.warn(`⚠️ Dependency not found: ${dep}`);
       }
     }
 
+    // 打包成 zip
     const zipPath = path.join(DIST_DIR, `${folder}.zip`);
     await zipFolder(targetDir, zipPath);
+
+    // 清理
     fs.rmSync(targetDir, { recursive: true, force: true });
 
     const readme: Readme = JSON.parse(fs.readFileSync(readmeFile, 'utf-8'));
-
     const item = {
       key_id: readme.key_id,
       name: readme.name,
@@ -107,8 +137,6 @@ async function build() {
 
     appStoreList.push(item);
   }
-
-
 
   const finalJson = {
     version,

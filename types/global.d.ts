@@ -21,6 +21,8 @@ declare namespace Global {
     }
 
     interface RunnerData {
+        id: string;
+        account_id: string;
         app_dir: string;
         headless: boolean;
         executablePath?: string;
