@@ -96,7 +96,7 @@ async function build() {
       display_name: readme.display_name,
       version: readme.version,
       category: readme.category,
-      install_url: `https://gitee.com/opcooc/info-cast-updater/releases/download/latest/${folder}.zip`,
+      install_url: `https://gitee.com/opcooc/info-cast-app-store/releases/download/latest/${folder}.zip`,
       description: readme.description,
       author: readme.author,
       config_schema: JSON.stringify({
