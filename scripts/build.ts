@@ -99,7 +99,7 @@ async function build() {
     }
 
     // 复制指定依赖到插件中
-    const depsToInclude = ['playwright', 'dayjs'];
+    const depsToInclude = ['playwright-core', 'playwright', 'dayjs'];
     const targetNodeModules = path.join(targetDir, 'node_modules');
     for (const dep of depsToInclude) {
       const srcDep = path.join(NODE_MODULES_DIR, dep);
