@@ -35,7 +35,7 @@
 
 ## 🧩 平台能力支持矩阵（彩色徽章）
 
-| 平台 | 视频上传 | 图片（单/多图） | 富文本 | 音频 | 状态 |
+| 平台 | 视频上传 | 图片 | 富文本 | 音频 | 状态 |
 |------|-----------|-----------------|--------|------|------|
 | 今日头条 / 抖音（Douyin） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/已实现-brightgreen) |
 | 快手（Kuaishou） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/已实现-brightgreen) |
