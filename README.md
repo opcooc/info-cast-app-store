@@ -61,7 +61,7 @@
 ---
 | 平台 | 安装包 |
 |------|--------|
-| Windows NSIS | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64-setup.exe) |
+| Windows EXE | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64-setup.exe) |
 | Windows MSI  | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64_zh-CN.msi) |
 | macOS x64    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64.dmg) |
 | macOS ARM64  | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
