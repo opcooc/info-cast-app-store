@@ -109,8 +109,8 @@
 
 | 支付方式 | 二维码 |
 |----------|--------|
-| WeChat  | ![WeChat Code](preview/wechat-code.png) |
-| Alipay  | ![Alipay Code](preview/alipay-code.png) |
+| WeChat  | ![WeChat Code](preview/wechat-code.jpg) |
+| Alipay  | ![Alipay Code](preview/alipay-code.jpg) |
 
 ---
 
@@ -121,5 +121,5 @@
 
 | 群类型 | 二维码 |
 |--------|--------|
-| 微信 | ![微信二维码](preview/wechat-group.png) |
-| QQ群   | ![QQ群二维码](preview/qq-group.png) |
+| 微信 | ![微信二维码](preview/wechat-group.jpg) |
+| QQ群   | ![QQ群二维码](preview/qq-group.jpg) |
