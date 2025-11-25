@@ -37,7 +37,7 @@
 
 | 平台 | 视频上传 | 图片 | 富文本 | 音频 | 状态 |
 |------|-----------|-----------------|--------|------|------|
-| 今日头条 / 抖音（Douyin） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
+| 抖音（Douyin） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
 | 快手（Kuaishou） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
 | 视频号（Shipinhao） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
 | TikTok | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
