@@ -109,7 +109,7 @@
 
 <div>
   <img src="preview/wechat-code.jpg" width="300" height="300" alt="WeChat Code">
-  <img src="preview/alipay-code.jpg" width="300" height="300" alt="Alipay Code">
+  <img src="preview/alipay-code.jpg" width="300" height="380" alt="Alipay Code">
 </div>
 
 ---
