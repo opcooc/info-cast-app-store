@@ -107,10 +107,10 @@
 ### 💝 赞助支持
 如果您觉得 **InfoCast** 对您有帮助，欢迎赞助支持，您的支持是我们不断前进的动力！
 
-| 支付方式 | 二维码 |
-|----------|--------|
-| WeChat  | ![WeChat Code](preview/wechat-code.jpg) |
-| Alipay  | ![Alipay Code](preview/alipay-code.jpg) |
+<div>
+  <img src="preview/wechat-code.jpg" height="240" alt="WeChat Code">
+  <img src="preview/alipay-code.jpg" height="240" alt="Alipay Code">
+</div>
 
 ---
 
@@ -118,6 +118,11 @@
 
 ### 🤝 InfoCast 社区讨论群
 与开发者和用户一起交流讨论，获取最新资讯和技术支持，第一时间反馈问题与建议。
+
+<div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+   <img src="preview/wechat-group.jpg" width="260" height="340" alt="微信二维码">
+   <img src="preview/qq-group.jpg" width="260" height="340" alt="QQ群二维码">
+</div>
 
 | 群类型 | 二维码 |
 |--------|--------|
