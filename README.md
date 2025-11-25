@@ -29,7 +29,7 @@
 | 平台接入（账户管理） | 通过插件接入不同平台；一个平台可绑定多个账号；统一管理授权与登录 | 🔌 |
 | 代理管理 | 每个账号可独立配置代理；支持跨地区运营与多账号隔离 | 🌐 |
 | 资源管理 | 上传并管理资源文件；支持资源库与合集文件夹 | 🗂️ |
-| 插件 / 平台应用市场 | 下载 / 更新 / 管理插件；扩展平台能力；决定平台登录与授权方式 | 🛍️ |
+| 插件/平台应用市场 | 下载 / 更新 / 管理插件；扩展平台能力；决定平台登录与授权方式 | 🛍️ |
 
 ---
 
@@ -43,7 +43,7 @@
 | TikTok | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
 | 小红书（Xiaohongshu） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
 | 百家号（Baijiahao） | ![status](https://img.shields.io/badge/✔-支持-brightgreen) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
-| Bilibili | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/开发中-yellow) |
+| Bilibili | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) | ![status](https://img.shields.io/badge/⚪-开发中-yellow) |
 | 待支持平台 | ![status](https://img.shields.io/badge/❌-不支持-red) | ![status](https://img.shields.io/badge/❌-不支持-red) | ![status](https://img.shields.io/badge/❌-不支持-red) | ![status](https://img.shields.io/badge/❌-不支持-red) | ![status](https://img.shields.io/badge/暂不支持-red) |
 
 ---
@@ -94,11 +94,40 @@
 
 ## 📸 功能界面预览（待补充）
 
-- 首页 / 控制台界面（截图预留）  
-- 内容发布页面（截图预留）  
-- 发布记录页面（截图预留）  
-- 插件市场页面（截图预留）  
-- 资源库页面（截图预留）  
+### 🖥 首页 / 控制台界面
+<div align="center">
+  <img src="preview/home.png" style="max-width: 100%; height: auto;" alt="首页 / 控制台界面">
+</div>
+
+### 📄 内容发布页面
+<div align="center">
+  <img src="preview/release1.png" style="max-width: 100%; height: auto;" alt="内容发布页面">
+</div>
+
+### 📊 发布记录页面
+<div align="center">
+  <img src="preview/release-list.png" style="max-width: 100%; height: auto;" alt="发布记录页面">
+</div>
+
+### 🧩 平台管理页面
+<div align="center">
+  <img src="preview/platform.png" style="max-width: 100%; height: auto;" alt="平台管理页面">
+</div>
+
+### 🌐 代理管理页面
+<div align="center">
+  <img src="preview/proxy.png" style="max-width: 100%; height: auto;" alt="代理管理页面">
+</div>
+
+### 📁 资源库页面
+<div align="center">
+  <img src="preview/resource.png" style="max-width: 100%; height: auto;" alt="资源库页面">
+</div>
+
+### 🛒 插件市场页面
+<div align="center">
+  <img src="preview/app-store.png" style="max-width: 100%; height: auto;" alt="插件市场页面">
+</div>
 
 ---
 
@@ -109,7 +138,7 @@
 
 <div>
   <img src="preview/wechat-code.jpg" width="300" height="300" alt="WeChat Code">
-  <img src="preview/alipay-code.jpg" width="300" height="380" alt="Alipay Code">
+  <img src="preview/alipay-code.jpg" width="280" height="390" alt="Alipay Code">
 </div>
 
 ---
