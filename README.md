@@ -56,7 +56,7 @@
 |------|--------|
 | Windows | `info-cast_1.0.0_x64-setup.exe`<br>`info-cast_1.0.0_x64_zh-CN.msi` |
 | macOS | `info-cast_1.0.0_x64.dmg`<br>`info-cast_1.0.0_aarch64.dmg`<br>`info-cast_x64.app.tar.gz` |
-| Linux | `info-cast-1.0.0-1.x86_64.rpm`<br>`info-cast_1.0.0_amd64.deb`<br>`info-cast_aarch64.app.tar.gz`<br>`info-cast_x64.app.tar.gz.sig` |
+| Linux | `info-cast-1.0.0-1.x86_64.rpm`<br>`info-cast_1.0.0_amd64.deb`<br>`info-cast_aarch64.app.tar.gz` |
 
 ---
 
