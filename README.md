@@ -121,10 +121,6 @@
 
 <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
    <img src="preview/wechat-group.jpg" width="260" height="340" alt="微信二维码">
-   <img src="preview/qq-group.jpg" width="260" height="340" alt="QQ群二维码">
+   <img src="preview/qq-group.jpg" width="260" height="500" alt="QQ群二维码">
 </div>
 
-| 群类型 | 二维码 |
-|--------|--------|
-| 微信 | ![微信二维码](preview/wechat-group.jpg) |
-| QQ群   | ![QQ群二维码](preview/qq-group.jpg) |
