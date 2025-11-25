@@ -108,8 +108,8 @@
 如果您觉得 **InfoCast** 对您有帮助，欢迎赞助支持，您的支持是我们不断前进的动力！
 
 <div>
-  <img src="preview/wechat-code.jpg" height="240" alt="WeChat Code">
-  <img src="preview/alipay-code.jpg" height="240" alt="Alipay Code">
+  <img src="preview/wechat-code.jpg" width="300" height="300" alt="WeChat Code">
+  <img src="preview/alipay-code.jpg" width="300" height="300" alt="Alipay Code">
 </div>
 
 ---
@@ -121,6 +121,6 @@
 
 <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
    <img src="preview/wechat-group.jpg" width="260" height="340" alt="微信二维码">
-   <img src="preview/qq-group.jpg" width="260" height="500" alt="QQ群二维码">
+   <img src="preview/qq-group.jpg" width="320" height="500" alt="QQ群二维码">
 </div>
 
