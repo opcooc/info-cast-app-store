@@ -1,6 +1,6 @@
 # 🛍 info-cast-app-store
 
-**info-cast-app-store** 是 **info-cast（信息分发平台客户端）** 的开源插件市场仓库，基于 Playwright 自动化网页操作。  
+**info-cast-app-store** 是 **[info-cast](https://github.com/opcooc/info-cast-updater)（信息分发平台客户端）** 的开源插件市场仓库，基于 Playwright 自动化网页操作。  
 它是 info-cast 的“平台能力中心”，用于管理插件发布、更新和版本控制。  
 开发者可以通过 info-cast-app-store 为 info-cast 提供新的平台接入能力或扩展现有功能。
 
