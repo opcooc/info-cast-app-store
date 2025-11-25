@@ -61,20 +61,20 @@
 ---
 | 平台 | 安装包 |
 |------|--------|
-| Windows NSIS | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64-setup.exe) |
-| Windows MSI  | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64_zh-CN.msi) |
-| macOS x64    | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64.dmg) |
-| macOS ARM64  | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
-| Linux RPM    | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast-1.0.0-1.x86_64.rpm) |
-| Linux DEB    | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_amd64.deb) |
-| Linux AppTar | 📥 [下载 info-cast v{1.0.0}](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
+| Windows NSIS | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64-setup.exe) |
+| Windows MSI  | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64_zh-CN.msi) |
+| macOS x64    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64.dmg) |
+| macOS ARM64  | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
+| Linux RPM    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast-1.0.0-1.x86_64.rpm) |
+| Linux DEB    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_amd64.deb) |
+| Linux AppTar | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
 
 ---
 
 
 ## ⚙️ 使用方式
 
-1. 下载并安装 **📥 [info-cast](https://github.com/opcooc/info-cast-updater)** 对应平台版本  
+1. 下载并安装 **📥 [info-cast](https://github.com/opcooc/info-cast-updater/releases)** 对应平台版本  
 2. 打开应用并登录账号  
 3. **非激活用户限制**：
    - 只能绑定一个平台账号  
