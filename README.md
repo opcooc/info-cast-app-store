@@ -54,13 +54,13 @@
 
 | 平台 | 安装包 |
 |------|--------|
-| Windows 10, Windows 11 EXE | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64-setup.exe) |
-| Windows 10, Windows 11 MSI  | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64_zh-CN.msi) |
-| macOS 10.5+ x64    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64.dmg) |
-| macOS 10.5+ ARM64  | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
-| Ubuntu 22.0+ RPM    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast-1.0.0-1.x86_64.rpm) |
-| Ubuntu 22.0+ DEB    | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_amd64.deb) |
-| Ubuntu 22.0+ AppTar | 📥 [下载 info-cast](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
+| Windows 10, Windows 11 EXE | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64-setup.exe) |
+| Windows 10, Windows 11 MSI  | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64_zh-CN.msi) |
+| macOS 10.5+ x64    | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_x64.dmg) |
+| macOS 10.5+ ARM64  | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
+| Ubuntu 22.0+ RPM    | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast-1.0.0-1.x86_64.rpm) |
+| Ubuntu 22.0+ DEB    | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_1.0.0_amd64.deb) |
+| Ubuntu 22.0+ AppTar | 📥 [下载](https://github.com/opcooc/info-cast-updater/releases/download/v1.0.0/info-cast_aarch64.app.tar.gz) |
 
 ---
 
