@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/archiver": "^7.0.0",
     "@types/node": "^24.2.1",
+    "@types/express": "^5.0.5",
     "archiver": "^7.0.1",
     "dotenv": "^17.2.3",
     "execa": "^9.6.0",
@@ -22,8 +23,12 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.23.0",
+    "@playwright/mcp": "^0.0.48",
     "dayjs": "^1.11.18",
-    "playwright": "^1.56.1",
-    "playwright-core": "^1.56.1"
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "playwright": "1.58.0-alpha-1763757971000",
+    "playwright-core": "1.58.0-alpha-1763757971000"
   }
 }
