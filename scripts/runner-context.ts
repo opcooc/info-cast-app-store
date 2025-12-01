@@ -62,9 +62,10 @@ class RunnerContext {
         // 针对 douyin 平台修复 viewport
         await this.props.context.addInitScript({ content: viewportScript });
 
-
         await this.props.context.grantPermissions(['geolocation']);
-        this.props.page = await this.props.context.newPage();
+        this.props.page = (await this.props.context.newPage());
+        this.props.page.setDefaultTimeout(60 * 1000);
+
         this.setupPageEventListeners();
     }
 

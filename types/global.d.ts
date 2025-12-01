@@ -29,10 +29,10 @@ declare namespace Global {
         proxy?: ProxyData;
         format: string;
         title: string;
-        location: string | null;
-        description: string | null;
-        tags: string | null;
-        category: string | null;
+        location?: string;
+        description?: string;
+        tags?: string[];
+        category?: string;
         visibility: string;
         enable_series: boolean;
         allow_comment: boolean;
@@ -50,7 +50,7 @@ declare namespace Global {
         enable_brand: boolean;
         schedule_execute_time: number;
         file_path: string;
-        cover_path: string | null;
+        cover_path?: string;
         cookie_info: string;
     }
 
